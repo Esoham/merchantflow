@@ -1,48 +1,56 @@
-# MVP architecture
+# MerchantFlow — independent prototype architecture
+
+**Product owner:** Esoham Abalo  
+**Status:** Browser prototype published; architecture verification and QA in progress.
+
+## Current system (implemented prototype)
 
 ```text
-Shopify Admin (embedded MerchantFlow UI / App Bridge)
-  -> React Router loader/action (Shopify-authenticated backend)
-  -> Shopify GraphQL Admin API (read_orders, inventory scopes as needed)
-  -> Normalize order + fulfillment + location inventory data
-  -> Pure risk engine: src/risk-engine.mjs
-  -> Exception queue rendered in app
-  -> Prisma session/issue status database (shop ID + order ID + status)
+Synthetic order fixtures
+  -> Browser-based deterministic exception scoring
+  -> Prioritized exception queue and reasons
+  -> Search and status filtering
+  -> Review / resolve workflow
+  -> localStorage for same-browser workflow state
 ```
 
-## Trust boundaries
-- Shopify access tokens exist **server-side only** in the session store.
-- Never put OAuth secrets, tokens, environment variables or merchant PII into repository or browser.
-- Verify shop session through official `authenticate.admin(request)`.
-- Input is the authenticated shop, not a user-provided shop URL.
-- Start with read-only Shopify API scopes; app's internal issue-status writes do not mutate Shopify orders.
-- Uninstall/delete webhooks and retention need implementation before production distribution.
+**Live prototype:** https://esoham.github.io/projects/merchantflow/  
+**Browser source:** https://github.com/Esoham/Esoham.github.io/tree/main/projects/merchantflow
 
-## Data shapes
+A standalone rules engine lives at `src/risk-engine.mjs` in this repository with unit tests in `test/`. The current browser implementation also contains scoring logic; connecting the browser to the same tested module is a **planned consistency improvement**, not yet a completed integration.
+
+## Data contract
+
 ```ts
 type NormalizedOrder = {
   id: string;
-  createdAt: string; // ISO8601
+  createdAt: string;
   fulfillmentStatus: 'fulfilled' | 'unfulfilled' | 'partial';
   requiredQuantity: number;
   availableQuantity: number | null; // null = unknown
-  inventoryTracked: boolean;
-  manualAttention: boolean;
-}
+  inventoryTracked?: boolean;
+  manualAttention?: boolean;
+};
 type IssueStatus = 'open' | 'reviewing' | 'resolved';
 ```
 
-## Integration sequence
-1. Use Shopify CLI's **official** React Router template (do not manually improvise OAuth).
-2. Run `shopify app dev` and install on a selected dev store.
-3. Query current granted access scopes and show an error if permissions are missing.
-4. Implement paginated order reads and inventory joins by fulfillment location.
-5. Use an adapter that never assumes unavailable inventory equals zero.
-6. Store status keyed by shop + Shopify order ID.
-7. Add unit, integration, accessibility and browser tests.
+## Key decisions and trade-offs
 
-## Architecture decisions
-- Rules before AI: debuggability and trust.
-- Server side Shopify Admin API: secrets stay out of browser.
-- Synthetic fixture mode separately labeled: app remains demonstrable without actual merchant data.
-- GitHub Pages hosts standalone concept demo only. Authenticated Shopify app requires a server deployment.
+- **Independent product:** no external credentials, OAuth, or paid APIs required.
+- **Explainable rules:** operators can see why an exception was raised.
+- **Synthetic data:** enables public demos without exposing customer information.
+- **Browser-local state:** low-cost prototype, but not suitable for multi-user collaboration.
+- **Simplified stock model:** does not model multi-location inventory and must not be described as production inventory accuracy.
+
+## Trust boundaries
+
+No customer personal data or API secrets are required. Browser state belongs to the current browser profile and should not be treated as secure shared storage. The prototype is not a production order-management system.
+
+## Planned evolution (not implemented)
+
+1. Align browser scoring with the tested risk engine.
+2. Add structured browser QA, keyboard accessibility and error-state tests.
+3. Evaluate whether shared ownership is necessary through user research.
+4. If justified, add an authenticated backend, shared database, audit trail and permissions.
+
+An optional legacy Shopify integration sketch exists separately in `docs/SHOPIFY-INTEGRATION.md`. It is **out of scope** for the independent product and does not describe the current architecture.
