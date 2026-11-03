@@ -1,0 +1,14 @@
+{
+  "name": "merchantflow",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Independent operations exception management product prototype",
+  "scripts": {
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
