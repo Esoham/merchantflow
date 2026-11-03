@@ -1,26 +1,33 @@
 # MerchantFlow — QA evidence log
 
-## 2026-11-03: Initial manual smoke test
-**Reporter:** Product owner (self-reported through ChatGPT conversation).  
-**Environment:** Public GitHub Pages demo; browser/version not recorded.  
-**Result:** Product owner confirmed that the application loads and allows interaction with records.  
-**Scope:** Basic smoke test only. Individual scenarios (search, filtering, persistence, reset, accessibility) were not separately attested, so their status remains **Not verified**.
+## 2026-11-03: Owner-reported browser smoke test
+**Environment:** Published GitHub Pages prototype; browser/version not recorded.  
+**Evidence:** Owner reported that both portfolio apps loaded and allowed interaction.  
+**Scope:** General interaction only. Search, filtering, persistence, reset, mobile and keyboard accessibility remain unverified.
 
-## Automated tests
-Unit tests committed in `test/risk-engine.test.mjs` and `test/normalize-orders.test.mjs`. GitHub Actions workflow configured at `.github/workflows/tests.yml`. **Passing CI status not independently verified** at the time of this log.
+## 2026-11-03: Independent Node.js rules-engine verification
+**Executor:** ChatGPT, isolated local Node.js runtime.  
+**Method:** Reconstructed the current GitHub `src/risk-engine.mjs` source and a 15-case test harness covering the same major behavior and boundaries as the repository's unit tests; executed `node --test` locally.  
+**Result:** **15 passed / 0 failed**, including shortage, overdue boundaries, unknown stock, partial fulfillment, manual attention, queue ordering, combined signals and invalid input.
+
+**Important evidence limitation:** This was a local reconstruction and representative harness, **not an execution of the GitHub checkout's exact committed test files**. The result must not be presented as proof of passing GitHub CI, complete test coverage, or browser end-to-end QA.
+
+## CI status
+Workflow committed at `.github/workflows/tests.yml`. **GitHub Actions result not confirmed.**
 
 ## v0.2 QA matrix
-| Case | Expected | Status |
-|---|---|---|
-| App loads | Dashboard renders | Pass (owner-reported) |
-| Record interaction | Review dialog responds | Pass (owner-reported, broad) |
-| Risk ranking | Higher score first | Automated test committed; execution unverified |
-| Fulfilled order | Excluded from queue | Automated test committed; execution unverified |
-| Search + filter | Results reflect both inputs | Not verified |
-| Refresh persistence | Status retained in same browser | Not verified |
-| Reset | Returns all statuses to initial | Not verified |
-| Keyboard-only flow | All actions reachable | Not verified |
-| Mobile layout | No clipped critical actions | Not verified |
+| Case | Result |
+|---|---|
+| Published app loads and responds to interactions | Pass — owner reported, broad |
+| Core scoring logic, representative Node.js cases | Pass — 15 local checks |
+| Exact committed GitHub test suite | Not independently executed |
+| GitHub Actions workflow | Not confirmed |
+| Search and filter combined | Not verified |
+| Status persistence after refresh | Not verified |
+| Reset to defaults | Not verified |
+| Keyboard-only navigation | Not verified |
+| Mobile viewport layout | Not verified |
+| Demo rule consistency with shared engine | Not verified |
 
-## Next
-Check CI, execute each manual scenario, capture date/device/browser, record defects, fix, and rerun. Do not describe tests as passed until actually executed.
+## Release gate
+**v0.2 QA is not yet signed off.** Before claiming completion: confirm exact repo CI, test browser scenarios, record defects and retests, and capture reproducible evidence. No user interviews or product-impact outcomes have been measured.
