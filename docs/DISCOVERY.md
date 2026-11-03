@@ -1,14 +1,14 @@
 # Discovery plan — MerchantFlow
 
 ## Problem hypothesis
-Small merchants waste time switching between Shopify order lists and inventory pages to recognize which orders need immediate attention. This is a hypothesis, not validated field research.
+Small merchants waste time switching between order lists and inventory records to recognize which orders need immediate attention. This is a hypothesis, not validated field research.
 
 ## Segments
 - Primary: store owner or merchant operations coordinator doing daily fulfillment.
 - Secondary: small team lead overseeing warehouse picking and customer exceptions.
 
 ## Research protocol
-Interview 3–5 consenting Shopify merchants. Ask: Walk through your last delayed order; how did you detect it? Which screens did you use? What prevented resolution? What alert would have helped? Ask participants to rank risk scenarios. Observe without directing, and distinguish their actual statements from our interpretations.
+Interview 3–5 consenting small-business fulfillment operators. Ask: Walk through your last delayed order; how did you detect it? Which screens did you use? What prevented resolution? What alert would have helped? Ask participants to rank risk scenarios. Observe without directing, and distinguish their actual statements from our interpretations.
 
 ## Usability test
 Give five testers a sample order queue without explaining the risk score. Ask them to identify the first order to investigate and explain why. Measure time, completion, comprehension and false positives. Note any changes made from findings.
