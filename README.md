@@ -2,6 +2,8 @@
 
 **An independent operations intelligence product** for small fulfillment teams. MerchantFlow detects fulfillment risks, explains their causes, and supports a review-and-resolution workflow.
 
+**Quick assessment for recruiters:** [Try the browser prototype](https://esoham.github.io/projects/merchantflow/) to review a fictional fulfillment queue, then inspect the [PRD](docs/PRD.md), [core code](src/), and [automated tests](test/). This demonstrates a problem-to-prototype workflow spanning product thinking, operations, implementation, and QA. **No real customer validation or production outcomes are claimed.**
+
 [**Open the live interactive prototype**](https://esoham.github.io/projects/merchantflow/) · [Product strategy](docs/PRODUCT_STRATEGY.md) · [Roadmap](docs/RELEASE_PLAN.md) · [QA report](docs/QA_REPORT.md)
 
 ## Why this product exists
